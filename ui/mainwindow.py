@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
         self.scene_width = 780
         self.scene_height = 460
         # create array
-        self.array = self.get_random_array(2)
+        self.array = self.get_random_array(10)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -131,7 +131,7 @@ class Ui_MainWindow(object):
             speed = 300
         else:
             speed = 120 - len(self.array)
-
+        # disable buttons while sorting algorithms are working
         self.button_animate.setEnabled(False)
         self.button_generate.setEnabled(False)
 
@@ -139,7 +139,7 @@ class Ui_MainWindow(object):
             self.bubble_sort(speed)
         else:
             pass
-
+        # enalbe buttons when sorting is done
         self.button_animate.setEnabled(True)
         self.button_generate.setEnabled(True)
 
