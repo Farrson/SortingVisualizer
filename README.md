@@ -1,4 +1,4 @@
-# SortingVisualizer
+# PyQt SortingVisualizer
 
 A little GUI to visualize sorting algorithms. It is basically a remake of a program I wrote when I took a Datastructures and Algorithms class. Helped me to unterstand the algorithms better.
 
@@ -18,6 +18,6 @@ Choose a size for your array by using the slider, click the "generate" button to
 # What did I learn?
 * Creating a GUI using the Qt creator and PyQt5
 * A refresher on sorting algorithms
-* matplotlib and pyqt aren't friends ;)
+* matplotlib and pyqt dont get along ;)
 
 
