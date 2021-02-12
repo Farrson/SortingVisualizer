@@ -82,7 +82,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Python Sorting Visualizer using PyQt5"))
         self.comboBox.setItemText(0, _translate("MainWindow", "BubbleSort"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Insertion Sort"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "InsertionSort"))
         self.button_animate.setText(_translate("MainWindow", "Animate!"))
         self.button_generate.setText(_translate("MainWindow", "Generate"))
         self.label.setText(_translate("MainWindow", "Adjust Array Size"))
@@ -111,20 +111,22 @@ class Ui_MainWindow(object):
             rect.setBrush(QtGui.QBrush(QtGui.QColor(127, 255, 212)))
             self.scene.addItem(rect)
 
+    # paint the rectangles during sorting
     def update_rects(self, pos1, pos2, finished):
         self.scene.clear()
         w1 = int(self.scene_width // len(self.array))
-        rect_list = []
         for i in range(0, len(self.array)):
             rect = QtWidgets.QGraphicsRectItem(i * w1, 0, w1, self.array[i])
-            if i == pos1 or i == pos2:
+            if i == pos1:
+                rect.setBrush(QtGui.QBrush(QtGui.QColor(255, 64, 64)))
+            elif i == pos2:
                 rect.setBrush(QtGui.QBrush(QtGui.QColor(255, 64, 64)))
             elif i >= finished:
                 rect.setBrush(QtGui.QBrush(QtGui.QColor(0, 255, 0)))
             else:
                 rect.setBrush(QtGui.QBrush(QtGui.QColor(127, 255, 212)))
+
             self.scene.addItem(rect)
-            rect_list.append(rect)
 
     def choose_algo(self):
         if len(self.array) < 10:
@@ -137,6 +139,8 @@ class Ui_MainWindow(object):
 
         if self.comboBox.currentText() == "BubbleSort":
             self.bubble_sort(speed)
+        elif self.comboBox.currentText() == "InsertionSort":
+            self.insertion_sort(speed)
         else:
             pass
         # enalbe buttons when sorting is done
@@ -152,15 +156,26 @@ class Ui_MainWindow(object):
             swapped = False
             for j in range(0, len(self.array) - i - 1):
                 self.update_rects(j, j+1, len(self.array) - i)
+                QtTest.QTest.qWait(speed)
                 if self.array[j] > self.array[j + 1]:
-                    self.update_rects(j, j+1, len(self.array)-i)
                     temp = self.array[j]
                     self.array[j] = self.array[j + 1]
                     self.array[j + 1] = temp
-                    QtTest.QTest.qWait(speed)
                     swapped = True
-            self.update_rects(0, 0, len(self.array)-i)
-        return self.array
+        # when the array is sorted, all rectangles need to be displayed in green
+        self.update_rects(-1, -1, -1)
 
+    def insertion_sort(self, speed):
+        for i in range(1, len(self.array)):
+            key = self.array[i]
+            j = i - 1
+            while key < self.array[j] and j >= 0:
+                self.update_rects(i, j, len(self.array) + 1)
+                QtTest.QTest.qWait(speed)
+                self.array[j+1] = self.array[j]
+                j -= 1
 
+            self.array[j+1] = key
+
+        self.update_rects(-1, -1, -1)
 
